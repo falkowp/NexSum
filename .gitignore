@@ -31,7 +31,7 @@ ENV/
 # Our data and models
 src/data/raw/
 src/data/processed/
-src/models/
+src/archive/
 
 # Environment variables
 .env

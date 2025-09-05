@@ -1,4 +1,16 @@
-from .encoder import Encoder
-from .attention import Attention
-from .decoder import Decoder
-from .seq2seq import Seq2Seq
+"""
+Model components for the Transformer summarization system
+"""
+
+# Import main classes
+from .transformer import SimpleTransformer
+from .tokenizer import SimpleTokenizer
+
+# Make available for import
+__all__ = [
+    'SimpleTransformer',
+    'SimpleTokenizer'
+]
+
+# Package metadata
+__version__ = "1.0.0"
