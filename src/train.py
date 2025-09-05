@@ -7,10 +7,10 @@ import time
 import os
 import numpy as np
 
-from src.models.transformers import SimpleTransformer
-from src.data.tokenizer import SimpleTokenizer
-from src.data.dataset import SummaryDataset, collate_fn
-from src.utils.real_data_loader import load_sample_data, load_validation_data
+from .models.transformer import SimpleTransformer
+from .data.tokenizer import SimpleTokenizer
+from .data.dataset import SummaryDataset, collate_fn
+from .utils.real_data_loader import load_sample_data, load_validation_data
 
 def create_dataloaders(tokenizer, batch_size=2):
     train_data = load_sample_data()
@@ -81,7 +81,7 @@ def train_model():
     
     optimizer = optim.Adam(
         model.parameters(), 
-        lr=0.00001,
+        lr=0.00001,  
         betas=(0.9, 0.98), 
         eps=1e-9,
         weight_decay=0.001
@@ -94,7 +94,7 @@ def train_model():
     train_loader, val_loader = create_dataloaders(tokenizer, batch_size=2)
     
     model.train()
-    num_epochs = 30  
+    num_epochs = 30
     best_val_loss = float('inf')
     patience_counter = 0
     patience = 8 

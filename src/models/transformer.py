@@ -66,12 +66,12 @@ class SimpleTransformer(nn.Module):
         return self.pos_encoding[:, :seq_len, :]
     
     def create_src_mask(self, src: torch.Tensor, pad_token_id: int = 0) -> torch.Tensor:
-        src_mask = (src != pad_token_id).unsqueeze(1).unsqueeze(2)
+        src_mask = (src != pad_token_id)
         return src_mask
     
     def create_tgt_mask(self, tgt_len: int) -> torch.Tensor:
         tgt_mask = torch.tril(torch.ones(tgt_len, tgt_len)).bool()
-        return tgt_mask.unsqueeze(0).unsqueeze(0)
+        return tgt_mask
     
     def forward(self, src: torch.Tensor, tgt: torch.Tensor, 
                 src_mask: Optional[torch.Tensor] = None, 
@@ -93,15 +93,16 @@ class SimpleTransformer(nn.Module):
         
         memory = src_emb
         for layer in self.encoder_layers:
-            memory = layer(memory, src_mask=src_mask)
+            memory = layer(memory, src_key_padding_mask=~src_mask if src_mask is not None else None)
         
         output = tgt_emb
         for layer in self.decoder_layers:
             output = layer(
                 output, 
                 memory, 
-                tgt_mask=tgt_mask, 
-                memory_mask=src_mask
+                tgt_mask=tgt_mask,
+                tgt_key_padding_mask=~tgt_mask if tgt_mask is not None else None,
+                memory_key_padding_mask=~src_mask if src_mask is not None else None
             )
         
         return self.fc_out(output)
