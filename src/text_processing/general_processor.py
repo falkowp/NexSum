@@ -1,7 +1,7 @@
 from typing import Dict, List
 from src.core.processor import BaseProcessor
 from config.models import ProcessingResult
-from src.processing.base_processor import TextPreprocessor
+from src.text_processing.base_processor import TextPreprocessor
 from src.models.extractors import GeneralElementsExtractor
 from src.models.summarizer import TextSummarizer
 

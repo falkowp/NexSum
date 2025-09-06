@@ -3,7 +3,7 @@ import nltk
 from typing import Dict, List, Any
 from src.core.processor import BaseProcessor
 from config.models import ProcessingResult
-from src.processing.base_processor import TextPreprocessor
+from src.text_processing.base_processor import TextPreprocessor
 from src.models.extractors import MeetingElementsExtractor
 
 class MeetingProcessor(BaseProcessor):

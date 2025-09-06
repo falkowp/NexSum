@@ -2,7 +2,7 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from .src.processing.academic_processor import AcademicProcessor
+from src.text_processing.academic_processor  import AcademicProcessor
 
 def test_academic_processing():
     academic_text = """
