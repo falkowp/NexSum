@@ -1,0 +1,51 @@
+NexSum/
+├── .gitignore
+├── README.md
+├── requirements.txt
+├── structure.txt
+├── config/
+│   ├── __init__.py
+│   ├── models.py
+│   └── settings.py
+├── src/
+│   ├── core/
+│   │   ├── __init__.py
+│   │   ├── content_detector.py
+│   │   └── processor.py
+│   ├── models/
+│   │   ├── __init__.py
+│   │   ├── extractors/
+│   │   │   ├── __init__.py
+│   │   │   ├── academic_extractor.py
+│   │   │   ├── base_extractor.py
+│   │   │   ├── book_extractor.py
+│   │   │   ├── general_extractor.py
+│   │   │   └── meeting_extractor.py
+│   │   └── summarizers/
+│   │       ├── __init__.py
+│   │       ├── reliable_summarizer.py
+│   │       └── summarizer.py
+│   ├── text_processing/
+│   │   ├── __init__.py
+│   │   ├── academic_processor.py
+│   │   ├── base_processor.py
+│   │   ├── book_processor.py
+│   │   ├── general_processor.py
+│   │   └── meeting_processor.py
+│   ├── transcription/
+│   │   ├── __init__.py
+│   │   └── transcriber.py
+│   └── utils/
+│       ├── __init__.py
+│       ├── helpers.py
+│       ├── logger.py
+│       └── validators.py
+├── tests/
+│   ├── test.mp3
+│   ├── test2.mp3
+│   ├── test_academic.py
+│   ├── test_basic.py
+│   ├── test_book.py
+│   ├── test_general.py
+│   └── test_visual_results.py
+└── venv/

@@ -5,7 +5,7 @@ from config.models import ProcessingResult
 from src.text_processing.base_processor import TextPreprocessor
 from src.models.extractors import AcademicElementsExtractor
 #from src.models.summarizer import TextSummarizer
-from src.models.reliable_summarizer import TextSummarizer
+from src.models import TextSummarizer
 
 class AcademicProcessor(BaseProcessor):
     """Process academic content (lectures, research papers, etc.)"""

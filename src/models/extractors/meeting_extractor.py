@@ -1,4 +1,9 @@
 from .base_extractor import BaseExtractor
+import re
+import nltk
+from typing import Dict, List, Any, Set
+from collections import defaultdict
+from abc import ABC, abstractmethod
 
 class MeetingElementsExtractor(BaseExtractor):
     """Extract meeting-specific elements"""

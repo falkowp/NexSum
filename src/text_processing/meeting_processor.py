@@ -5,7 +5,7 @@ from src.core.processor import BaseProcessor
 from config.models import ProcessingResult
 from src.text_processing.base_processor import TextPreprocessor
 from src.models.extractors import MeetingElementsExtractor
-from src.models.reliable_summarizer import TextSummarizer
+from src.models import TextSummarizer
 
 class MeetingProcessor(BaseProcessor):
     """Process meeting transcripts"""

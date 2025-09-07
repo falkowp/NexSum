@@ -4,7 +4,7 @@ from config.models import ProcessingResult
 from src.text_processing.base_processor import TextPreprocessor
 from src.models.extractors import GeneralElementsExtractor
 #from src.models.summarizer import TextSummarizer
-from src.models.reliable_summarizer import TextSummarizer
+from src.models import TextSummarizer
 
 class GeneralProcessor(BaseProcessor):
     """Process general content (fallback for unspecified types)"""

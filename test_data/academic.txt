@@ -1,0 +1,21 @@
+Lecture on Neural Networks - Chapter 4
+
+Learning Objectives:
+- Understand the fundamentals of neural network architecture
+- Learn about different activation functions
+- Comprehend the backpropagation algorithm
+- Apply neural networks to image recognition tasks
+
+Key Concepts:
+Neural networks are computational models inspired by the human brain. They consist of interconnected nodes (neurons) organized in layers. The input layer receives data, hidden layers process it, and the output layer produces results.
+
+Activation functions introduce non-linearity into the network. Common activation functions include:
+- Sigmoid: f(x) = 1 / (1 + e^(-x))
+- ReLU: f(x) = max(0, x)
+- Tanh: f(x) = (e^x - e^(-x)) / (e^x + e^(-x))
+
+Backpropagation is the algorithm used for training neural networks. It calculates the gradient of the loss function with respect to each weight by the chain rule.
+
+Definition: A neural network is defined as a computational graph where each node performs a simple mathematical operation and edges represent the flow of information.
+
+Applications include image recognition, natural language processing, and predictive analytics. The field continues to evolve with deep learning architectures.

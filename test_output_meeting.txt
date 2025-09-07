@@ -1,0 +1,17 @@
+Meeting Summary:
+The OAuth integration is working, but we're having issues with the social login buttons. Maria: I can look at the social login UI today.
+
+Participants:
+  • Made
+  • David
+  • Maria
+  • John
+  • Sarah
+
+Action Items:
+  • I'll need Maria's help on the styling.
+  • I'll send the bug report by end of day.
+  • Decisions Made: - We'll postpone the dark mode feature to next sprint - The launch date is confirmed for November 1st - We'll have a code review session on Wednesday Action Items: - John: Fix social login backend issues by Friday - Maria: Update social button designs by Thursday - David: Complete regression testing by next Monday - Sarah: Schedule customer feedback sessions for next week Next meeting: Thursday, October 19th at 10:00 AM.
+
+Key Decisions:
+  • Decisions Made: - We'll postpone the dark mode feature to next sprint - The launch date is confirmed for November 1st - We'll have a code review session on Wednesday Action Items: - John: Fix social login backend issues by Friday - Maria: Update social button designs by Thursday - David: Complete regression testing by next Monday - Sarah: Schedule customer feedback sessions for next week Next meeting: Thursday, October 19th at 10:00 AM.
