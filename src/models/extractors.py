@@ -199,37 +199,40 @@ class AcademicElementsExtractor(BaseExtractor):
     
     def _extract_learning_objectives(self, text: str) -> List[str]:
         """Extract learning objectives from academic text"""
-        objectives = []
+        objectives = set()  # Use set to avoid duplicates
         
-        # Pattern for dash-separated objectives
-        dash_pattern = r'(?:^|\n)\s*-\s*([^\n]+?)(?=\n\s*-|\n\n|$)'
-        dash_matches = re.findall(dash_pattern, text, re.IGNORECASE | re.DOTALL)
+        # Improved pattern matching
+        objective_patterns = [
+            r'learning objectives?[:\n]\s*([^\.]+?)(?=\.|\n\n|\n[A-Z]|$)',
+            r'objectives?[:\n]\s*([^\.]+?)(?=\.|\n\n|\n[A-Z]|$)',
+            r'goals?[:\n]\s*([^\.]+?)(?=\.|\n\n|\n[A-Z]|$)',
+        ]
         
-        for match in dash_matches:
-            if any(keyword in match.lower() for keyword in ['understand', 'learn', 'study', 'know', 'objective']):
-                objectives.append(match.strip())
+        for pattern in objective_patterns:
+            matches = re.findall(pattern, text, re.IGNORECASE | re.DOTALL)
+            for match in matches:
+                # Split by lines and clean
+                lines = match.split('\n')
+                for line in lines:
+                    line = line.strip()
+                    if line and any(keyword in line.lower() for keyword in 
+                                ['understand', 'learn', 'study', 'know', 'objective', 'goal', 'able to']):
+                        # Clean up the objective text
+                        clean_obj = re.sub(r'Key concepts.*', '', line)  # Remove trailing text
+                        clean_obj = clean_obj.strip()
+                        if clean_obj:
+                            objectives.add(clean_obj)
         
-        # If no dash objectives found, look for objective sections
-        if not objectives:
-            objective_section_patterns = [
-                r'learning objectives?[:\n]\s*(.*?)(?=\n\n|\n[A-Z]|$)',
-                r'objectives?[:\n]\s*(.*?)(?=\n\n|\n[A-Z]|$)',
-                r'goals?[:\n]\s*(.*?)(?=\n\n|\n[A-Z]|$)'
-            ]
-            
-            for pattern in objective_section_patterns:
-                matches = re.findall(pattern, text, re.IGNORECASE | re.DOTALL)
-                for match in matches:
-                    lines = match.split('\n')
-                    for line in lines:
-                        line = line.strip()
-                        if (line and any(keyword in line.lower() for keyword in 
-                            ['understand', 'learn', 'study', 'know', 'objective', 'goal']) and
-                            len(line.split()) < 25):
-                            objectives.append(line)
+        # Also look for bullet points with objectives
+        bullet_pattern = r'(?:^|\n)\s*[-•*]\s*([^\n]+?)(?=\n\s*[-•*]|\n\n|$)'
+        bullet_matches = re.findall(bullet_pattern, text, re.IGNORECASE)
+        for match in bullet_matches:
+            if any(keyword in match.lower() for keyword in 
+                ['understand', 'learn', 'study', 'know', 'objective']):
+                objectives.add(match.strip())
         
-        return objectives[:5] if objectives else ["No specific learning objectives detected"]
-    
+        return list(objectives)[:5] if objectives else ["Learning objectives not explicitly stated"]
+
     def _extract_key_definitions(self, text: str) -> List[str]:
         """Extract key definitions from academic text"""
         sentences = nltk.sent_tokenize(text)

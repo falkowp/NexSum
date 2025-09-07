@@ -5,12 +5,14 @@ from src.core.processor import BaseProcessor
 from config.models import ProcessingResult
 from src.text_processing.base_processor import TextPreprocessor
 from src.models.extractors import MeetingElementsExtractor
+from src.models.reliable_summarizer import TextSummarizer
 
 class MeetingProcessor(BaseProcessor):
     """Process meeting transcripts"""
     
     def __init__(self):
         self.extractor = MeetingElementsExtractor()
+        self.summarizer = TextSummarizer()
     
     def can_process(self, content_type: str) -> bool:
         return content_type == 'meeting'
@@ -23,7 +25,7 @@ class MeetingProcessor(BaseProcessor):
         elements = self.extractor.extract(processed_text)
         
         # Generate summary
-        summary = self._generate_summary(processed_text)
+        summary = self.summarizer.summarize(processed_text)
         
         return ProcessingResult(
             content_type='meeting',
@@ -42,7 +44,3 @@ class MeetingProcessor(BaseProcessor):
         text = TextPreprocessor.remove_filler_words(text, ['um', 'uh', 'like', 'you know'])
         text = TextPreprocessor.structure_speaker_turns(text)
         return text
-    
-    def _generate_summary(self, text: str) -> str:
-        # Implementation using your summarization model
-        pass

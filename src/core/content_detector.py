@@ -9,8 +9,9 @@ class ContentTypeDetector:
         'meeting': [
             r'\b(meeting|agenda|action items|decisions|participants|attendees)\b',
             r'\b(update|progress|status|discuss|review|schedule)\b',
-            r'\b([A-Z][a-z]+:)|(said|says|asked|replied|responded)\b',
-            r'\b(team|project|conference|call|minutes|action plan)\b'
+            r'\b([A-Z][a-z]+:\s)',  # More specific speaker pattern
+            r'\b(team|project|conference|call|minutes|action plan)\b',
+            r'\b(said|says|asked|replied|responded|suggested)\b'  # Added more dialog words
         ],
         'academic': [
             r'\b(lecture|chapter|section|theory|concept|definition|theorem)\b',
@@ -27,14 +28,16 @@ class ContentTypeDetector:
     }
     
     @staticmethod
-    def detect_content_type(text: str) -> ContentDetectionResult:
+    def detect_content_type(text: str):
         text_lower = text.lower()
         scores = {}
         
         for content_type, patterns in ContentTypeDetector.PATTERNS.items():
-            scores[content_type] = sum(
-                1 for pattern in patterns if re.search(pattern, text_lower)
-            )
+            score = 0
+            for pattern in patterns:
+                matches = re.findall(pattern, text_lower, re.IGNORECASE)
+                score += len(matches)
+            scores[content_type] = score
         
         # Calculate confidence
         total_score = sum(scores.values())
@@ -42,6 +45,6 @@ class ContentTypeDetector:
             return ContentDetectionResult('general', 0.0, scores)
         
         detected_type = max(scores.items(), key=lambda x: x[1])[0]
-        confidence = scores[detected_type] / total_score
+        confidence = scores[detected_type] / total_score if total_score > 0 else 0.0
         
         return ContentDetectionResult(detected_type, confidence, scores)
