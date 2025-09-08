@@ -1,11 +1,11 @@
 import re
 from typing import Dict, List
-from core.processor import BaseProcessor
-from config.models import ProcessingResult
-from text_processing.base_processor import TextPreprocessor
-from models.extractors import AcademicElementsExtractor
+from ..core.processor import BaseProcessor
+from ..config.models import ProcessingResult
+from ..text_processing.base_processor import TextPreprocessor
+from ..models.extractors import AcademicElementsExtractor
 #from src.models.summarizer import TextSummarizer
-from models import TextSummarizer
+from ..models import TextSummarizer
 
 class AcademicProcessor(BaseProcessor):
     """Process academic content (lectures, research papers, etc.)"""

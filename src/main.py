@@ -9,16 +9,16 @@ import sys
 from pathlib import Path
 from typing import Optional, Dict, Any, List
 
-from core.content_detector import ContentTypeDetector
-from core.processor import BaseProcessor
-from text_processing.academic_processor import AcademicProcessor
-from text_processing.book_processor import BookProcessor
-from text_processing.general_processor import GeneralProcessor
-from text_processing.meeting_processor import MeetingProcessor
-from utils.validators import validate_text
-from utils.helpers import clean_text
-from utils.output_formatter import OutputFormatter
-from core.config_manager import ConfigManager
+from .core.content_detector import ContentTypeDetector
+from .core.processor import BaseProcessor
+from .text_processing.academic_processor import AcademicProcessor
+from .text_processing.book_processor import BookProcessor
+from .text_processing.general_processor import GeneralProcessor
+from .text_processing.meeting_processor import MeetingProcessor
+from .utils.validators import validate_text
+from .utils.helpers import clean_text
+from .utils.output_formatter import OutputFormatter
+from .core.config_manager import ConfigManager
 
 class SummarizerApp:
     """Main application class for the summarizer functionality."""

@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import Dict, Any
-from config.models import ProcessingResult
+from src.config.models import ProcessingResult
 
 class BaseProcessor(ABC):
     """Abstract base class for all content processors"""

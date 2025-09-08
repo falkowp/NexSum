@@ -6,7 +6,7 @@ import json
 from typing import Dict, Any, List
 from pathlib import Path
 
-from config.output_config import OutputConfig
+from ..config.output_config import OutputConfig
 
 class OutputFormatter:
     """Format output results for different content types."""

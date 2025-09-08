@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 from typing import Dict, Any, List
 
-from config.output_config import OutputConfig, OutputElement
+from ..config.output_config import OutputConfig, OutputElement
 
 class ConfigManager:
     """Manage application configuration."""

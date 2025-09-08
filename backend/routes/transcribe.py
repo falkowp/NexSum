@@ -39,3 +39,4 @@ def transcribe():
     except Exception as e:
         print(f"[ERROR] Unexpected server error: {e}", flush=True)
         return jsonify({"success": False, "error": str(e)}), 500
+

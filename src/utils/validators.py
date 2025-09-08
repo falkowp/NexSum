@@ -1,5 +1,5 @@
 from typing import Any
-from config.settings import PROCESSING_SETTINGS
+from ..config.settings import PROCESSING_SETTINGS
 
 def validate_text(text: Any) -> str:
     """Validate input text"""

@@ -1,11 +1,11 @@
 import re
 from typing import Dict, List
-from core.processor import BaseProcessor
-from config.models import ProcessingResult
-from text_processing.base_processor import TextPreprocessor
-from models.extractors import BookElementsExtractor
+from ..core.processor import BaseProcessor
+from ..config.models import ProcessingResult
+from ..text_processing.base_processor import TextPreprocessor
+from ..models.extractors import BookElementsExtractor
 #from src.models.summarizer import TextSummarizer
-from models import TextSummarizer
+from ..models import TextSummarizer
 
 class BookProcessor(BaseProcessor):
     """Process book content (fiction, non-fiction, etc.)"""

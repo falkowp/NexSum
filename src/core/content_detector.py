@@ -1,6 +1,6 @@
 import re
 from typing import Dict
-from config.models import ContentDetectionResult
+from ..config.models import ContentDetectionResult
 
 class ContentTypeDetector:
     """Detect content type with confidence scoring"""

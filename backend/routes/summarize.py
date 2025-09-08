@@ -2,18 +2,25 @@ from flask import request, jsonify
 from . import api_bp
 from backend.services.summarization_service import summarize_text
 
-@api_bp.post("/summarize")
+from flask import Blueprint, request, jsonify
+from src.main import SummarizerApp
+
+summarizer = SummarizerApp()
+
+@api_bp.route("/summarize", methods=["POST"])
 def summarize():
-    payload = request.get_json(silent=True) or {}
-    text = payload.get("text", "")
-    content_type = payload.get("type")  # 'academic', 'book', 'general', 'meeting', or None
-
-    if not text or not isinstance(text, str):
-        return jsonify({"success": False, "error": "Field 'text' (string) is required"}), 400
-
     try:
-        result = summarize_text(text, content_type)
-        # result is already a dict from your SummarizerApp.summarize_text
-        return jsonify(result), (200 if result.get("success") else 400)
+        data = request.get_json()
+        if not data or "text" not in data:
+            return jsonify({"success": False, "error": "No text provided"}), 400
+
+        text = data["text"]
+        content_type = data.get("type")  # optional: academic/book/general/meeting
+
+        result = summarizer.summarize_text(text, content_type)
+        return jsonify({"success": True, "data": result})
+
     except Exception as e:
+        print(f"[ERROR] Summarization failed: {e}", flush=True)
         return jsonify({"success": False, "error": str(e)}), 500
+
