@@ -1,11 +1,11 @@
 import re
 import nltk
 from typing import Dict, List, Any
-from src.core.processor import BaseProcessor
+from core.processor import BaseProcessor
 from config.models import ProcessingResult
-from src.text_processing.base_processor import TextPreprocessor
-from src.models.extractors import MeetingElementsExtractor
-from src.models import TextSummarizer
+from text_processing.base_processor import TextPreprocessor
+from models.extractors import MeetingElementsExtractor
+from models import TextSummarizer
 
 class MeetingProcessor(BaseProcessor):
     """Process meeting transcripts"""

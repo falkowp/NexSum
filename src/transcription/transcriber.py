@@ -90,7 +90,7 @@ def process_audio_pipeline(audio_bytes: bytes) -> tuple[str, str]:
 # Example Local Test
 # -------------------
 if __name__ == "__main__":
-    path = r"C:\Users\patry\Desktop\NexSum\tests\test2.mp3"
+    path = r"C:\Users\patry\Desktop\NexSum\test_data\test.mp3"
     with open(path, "rb") as f:
         audio_bytes = f.read()
 

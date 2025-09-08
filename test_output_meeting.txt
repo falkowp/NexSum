@@ -2,11 +2,11 @@ Meeting Summary:
 The OAuth integration is working, but we're having issues with the social login buttons. Maria: I can look at the social login UI today.
 
 Participants:
-  • Made
-  • David
   • Maria
-  • John
+  • Made
   • Sarah
+  • David
+  • John
 
 Action Items:
   • I'll need Maria's help on the styling.

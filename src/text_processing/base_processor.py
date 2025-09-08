@@ -1,9 +1,9 @@
 import re
 import nltk
 from typing import List, Dict, Any
-from src.core.processor import BaseProcessor
+from core.processor import BaseProcessor
 from config.models import ProcessingResult
-from src.utils.helpers import clean_text
+from utils.helpers import clean_text
 
 class TextPreprocessor:
     """Handle text preprocessing operations"""

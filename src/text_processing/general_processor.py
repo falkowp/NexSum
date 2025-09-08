@@ -1,10 +1,10 @@
 from typing import Dict, List
-from src.core.processor import BaseProcessor
+from core.processor import BaseProcessor
 from config.models import ProcessingResult
-from src.text_processing.base_processor import TextPreprocessor
-from src.models.extractors import GeneralElementsExtractor
+from text_processing.base_processor import TextPreprocessor
+from models.extractors import GeneralElementsExtractor
 #from src.models.summarizer import TextSummarizer
-from src.models import TextSummarizer
+from models import TextSummarizer
 
 class GeneralProcessor(BaseProcessor):
     """Process general content (fallback for unspecified types)"""

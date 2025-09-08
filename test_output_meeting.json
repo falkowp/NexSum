@@ -3,11 +3,11 @@
   "summary": "The OAuth integration is working, but we're having issues with the social login buttons. Maria: I can look at the social login UI today.",
   "metadata": {
     "participants": [
-      "Made",
-      "David",
       "Maria",
-      "John",
-      "Sarah"
+      "Made",
+      "Sarah",
+      "David",
+      "John"
     ],
     "action_items": [
       "I'll need Maria's help on the styling.",

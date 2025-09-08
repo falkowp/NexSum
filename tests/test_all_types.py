@@ -10,7 +10,7 @@ from pathlib import Path
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from main import SummarizerApp
+from src.main import SummarizerApp
 
 def test_content_type(content_type, test_file, description):
     """Test a specific content type."""

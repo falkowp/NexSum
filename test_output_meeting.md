@@ -6,11 +6,11 @@ The OAuth integration is working, but we're having issues with the social login 
 
 ## Participants
 
-- Made
-- David
 - Maria
-- John
+- Made
 - Sarah
+- David
+- John
 
 ## Action Items
 
