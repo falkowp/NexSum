@@ -1,13 +1,8 @@
-"""
-Configuration for output elements by content type.
-"""
-
 from typing import Dict, List, Any, Callable
 from dataclasses import dataclass
 
 @dataclass
 class OutputElement:
-    """Configuration for a single output element."""
     name: str
     display_name: str
     priority: int
@@ -15,9 +10,7 @@ class OutputElement:
     enabled: bool = True
 
 class OutputConfig:
-    """Configuration for output elements by content type."""
     
-    # Base formatters
     @staticmethod
     def list_formatter(items: List[str]) -> str:
         if not items:
@@ -34,7 +27,6 @@ class OutputConfig:
             return "No metadata available"
         return json.dumps(metadata, indent=2, ensure_ascii=False)
     
-    # Content type configurations
     MEETING_CONFIG: Dict[str, OutputElement] = {
         'summary': OutputElement(
             name='summary',

@@ -21,7 +21,6 @@ def transcribe():
 
         audio_bytes = file.read()
 
-        # Process transcription pipeline with try/except
         try:
             raw_text, polished_text = process_audio_pipeline(audio_bytes)
         except Exception as e:
