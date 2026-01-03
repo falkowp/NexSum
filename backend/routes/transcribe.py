@@ -1,7 +1,7 @@
 from flask import request, jsonify
 from werkzeug.utils import secure_filename
 from . import api_bp
-from backend.services.transcription_service import transcribe_audio_bytes
+import backend.services.transcription_service as transcription_service
 import logging
 
 logger = logging.getLogger(__name__)
@@ -25,7 +25,7 @@ def transcribe():
         audio_bytes = file.read()
 
         try:
-            raw_text, polished_text = transcribe_audio_bytes(audio_bytes)
+            raw_text, polished_text = transcription_service.transcribe_audio_bytes(audio_bytes)
         except Exception as e:
             logger.exception("Transcription failed")
             return jsonify({"success": False, "error": str(e)}), 500
