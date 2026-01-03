@@ -14,7 +14,7 @@ export default function UploadAudio({
   processing,
   onReset 
 }) {
-  const [status, setStatus] = useState("idle"); 
+  const [_status, setStatus] = useState("idle"); 
   const [error, setError] = useState("");
   const fileInputRef = useRef(null);
 
@@ -55,7 +55,7 @@ export default function UploadAudio({
       setStatus("transcribing");
       const response = await api.post("/transcribe", formData, {
         headers: { "Content-Type": "multipart/form-data" },
-        onUploadProgress: (progressEvent) => {
+        onUploadProgress: (_progressEvent) => {
         }
       });
 
