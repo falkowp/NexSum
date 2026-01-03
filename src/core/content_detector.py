@@ -3,8 +3,12 @@ from typing import Dict
 from ..config.models import ContentDetectionResult
 
 class ContentTypeDetector:
-    """Detect content type with confidence scoring"""
-    
+    """Detect content type with confidence scoring.
+
+    Uses a trained classifier if available (ContentClassifier), otherwise falls back
+    to lightweight regex-based scoring.
+    """
+
     PATTERNS = {
         'meeting': [
             r'\b(meeting|agenda|action items|decisions|participants|attendees)\b',
@@ -29,6 +33,18 @@ class ContentTypeDetector:
     
     @staticmethod
     def detect_content_type(text: str):
+        """Try classifier first (if trained), fallback to pattern matching."""
+        # Try classifier
+        try:
+            from .content_classifier import ContentClassifier
+            classifier = ContentClassifier.load()
+            if classifier is not None:
+                res = classifier.predict(text)
+                return ContentDetectionResult(res['content_type'], res['confidence'], {'scores': res.get('scores', {}), 'evidence': res.get('evidence', [])})
+        except Exception:
+            # If classifier fails or not present, continue with pattern based detection
+            pass
+
         text_lower = text.lower()
         scores = {}
         evidence = {}
