@@ -30,11 +30,21 @@ def transcribe():
             logger.exception("Transcription failed")
             return jsonify({"success": False, "error": str(e)}), 500
 
+        # Detect content type from polished transcript
+        try:
+            from backend.services.content_service import detect_content_type
+            detection = detect_content_type(polished_text)
+        except Exception:
+            detection = {"content_type": "general", "confidence": 0.0, "features": {}}
+
         return jsonify({
             "success": True,
             "data": {
                 "raw_transcript": raw_text,
-                "polished_transcript": polished_text
+                "polished_transcript": polished_text,
+                "content_type": detection.get("content_type"),
+                "content_confidence": detection.get("confidence"),
+                "content_features": detection.get("features"),
             }
         })
 

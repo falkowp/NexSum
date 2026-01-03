@@ -44,6 +44,10 @@ def test_transcribe_success(monkeypatch, client):
     data = resp.get_json()
     assert data['success'] is True
     assert data['data']['raw_transcript'] == 'raw transcript'
+    # Content detection should run and return type/confidence
+    assert 'content_type' in data['data']
+    assert 'content_confidence' in data['data']
+    assert isinstance(data['data']['content_confidence'], float)
 
 
 def test_transcribe_unsupported_extension(client):

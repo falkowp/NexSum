@@ -31,20 +31,26 @@ class ContentTypeDetector:
     def detect_content_type(text: str):
         text_lower = text.lower()
         scores = {}
-        
+        evidence = {}
+
         for content_type, patterns in ContentTypeDetector.PATTERNS.items():
             score = 0
+            matches_for_type = []
             for pattern in patterns:
-                matches = re.findall(pattern, text_lower, re.IGNORECASE)
-                score += len(matches)
+                # finditer to capture match text
+                found = [m.group(0) for m in re.finditer(pattern, text_lower, re.IGNORECASE)]
+                score += len(found)
+                matches_for_type.extend(found)
             scores[content_type] = score
+            # keep up to 10 evidence matches
+            evidence[content_type] = matches_for_type[:10]
         
         # Calculate confidence
         total_score = sum(scores.values())
         if total_score == 0:
-            return ContentDetectionResult('general', 0.0, scores)
+            return ContentDetectionResult('general', 0.0, {'scores': scores, 'evidence': evidence})
         
         detected_type = max(scores.items(), key=lambda x: x[1])[0]
         confidence = scores[detected_type] / total_score if total_score > 0 else 0.0
         
-        return ContentDetectionResult(detected_type, confidence, scores)
+        return ContentDetectionResult(detected_type, confidence, {'scores': scores, 'evidence': evidence})
