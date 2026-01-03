@@ -107,10 +107,56 @@ def transcribe_audio_bytes(audio_bytes: bytes) -> str:
         if use_faster:
             text = _transcribe_with_faster(audio_np)
         else:
-            text = _transcribe_with_whisper(audio_np)
+            backend_choice = os.environ.get("TRANSCRIBER_BACKEND", "auto")
+            if backend_choice in ("whisper-cpp", "whisper.cpp") or os.environ.get("TRANSCRIBER_BACKEND") == "whisper-cpp":
+                text = _transcribe_with_whispercpp(chunk)
+            else:
+                text = _transcribe_with_whisper(audio_np)
         transcript.append(text)
 
     return " ".join(transcript)
+
+
+def _transcribe_with_whispercpp(audio_segment: AudioSegment) -> str:
+    """Transcribe using a local whisper.cpp (ggml) binary.
+
+    Requires environment variables:
+      - WHISPER_CPP_BIN: path to whisper.cpp main executable (or 'main' available on PATH)
+      - WHISPER_CPP_MODEL: path to ggml model file (e.g., ggml-small.bin)
+
+    This function writes the provided AudioSegment to a temporary WAV file and calls the binary.
+    """
+    import subprocess
+    import tempfile
+    from pathlib import Path
+
+    whisper_bin = os.environ.get("WHISPER_CPP_BIN", "main")
+    model_path = os.environ.get("WHISPER_CPP_MODEL")
+    if not model_path:
+        raise RuntimeError("WHISPER_CPP_MODEL environment variable must be set to the ggml model path")
+
+    # Export audio_segment to a temporary wav file
+    with tempfile.TemporaryDirectory() as td:
+        audio_path = Path(td) / "input.wav"
+        # Use pydub export; ensure PCM 16-bit WAV
+        audio_segment.export(str(audio_path), format="wav", parameters=["-ac", "1", "-ar", "16000"])
+
+        # Build command: whisper.cpp typically prints transcript to stdout
+        cmd = [whisper_bin, "-m", model_path, "-f", str(audio_path), "-otxt"]
+        # Allow overriding threads
+        threads = os.environ.get("WHISPER_CPP_THREADS")
+        if threads:
+            cmd.extend(["-t", threads])
+
+        try:
+            res = subprocess.run(cmd, capture_output=True, text=True, check=True, timeout=600)
+            out = res.stdout.strip()
+            # whisper.cpp tends to output the transcript lines; return as single string
+            return out
+        except subprocess.CalledProcessError as e:
+            raise RuntimeError(f"whisper.cpp failed: {e.stderr or e.stdout}")
+        except subprocess.TimeoutExpired:
+            raise RuntimeError("whisper.cpp timed out")
 
 def clean_text(text: str) -> str:
     text = re.sub(r'\b(\w+)( \1\b)+', r'\1', text.strip())
