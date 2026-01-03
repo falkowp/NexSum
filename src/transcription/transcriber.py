@@ -179,6 +179,7 @@ def capitalize_entities(text: str, chunk_size=10000) -> str:
     new_text = ""
 
     for chunk in chunks:
+        nlp = _get_nlp()
         doc = nlp(chunk)
         offset = 0
         chunk_text = chunk
