@@ -55,7 +55,7 @@ export default function UploadAudio({
       setStatus("transcribing");
       const response = await api.post("/transcribe", formData, {
         headers: { "Content-Type": "multipart/form-data" },
-        onUploadProgress: (_progressEvent) => {
+        onUploadProgress: () => {
         }
       });
 
