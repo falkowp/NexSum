@@ -1,7 +1,10 @@
-from flask import Blueprint, request, jsonify
+from flask import request, jsonify
 from werkzeug.utils import secure_filename
 from . import api_bp
-from src.transcription.transcriber import process_audio_pipeline
+from backend.services.transcription_service import transcribe_audio_bytes
+import logging
+
+logger = logging.getLogger(__name__)
 
 @api_bp.route("/transcribe", methods=["POST"])
 def transcribe():
@@ -12,8 +15,8 @@ def transcribe():
         file = request.files["audio"]
         filename = secure_filename(file.filename or "")
         ext = f".{filename.rsplit('.', 1)[-1].lower()}" if "." in filename else ""
-        print(f"[DEBUG] Uploaded filename: {filename}")
-        print(f"[DEBUG] Detected extension: {ext}")
+        logger.debug(f"Uploaded filename: {filename}")
+        logger.debug(f"Detected extension: {ext}")
 
         ALLOWED_EXTS = {".mp3", ".wav", ".m4a"}
         if ext not in ALLOWED_EXTS:
@@ -22,9 +25,9 @@ def transcribe():
         audio_bytes = file.read()
 
         try:
-            raw_text, polished_text = process_audio_pipeline(audio_bytes)
+            raw_text, polished_text = transcribe_audio_bytes(audio_bytes)
         except Exception as e:
-            print(f"[ERROR] Transcription failed: {e}", flush=True)
+            logger.exception("Transcription failed")
             return jsonify({"success": False, "error": str(e)}), 500
 
         return jsonify({
@@ -36,6 +39,6 @@ def transcribe():
         })
 
     except Exception as e:
-        print(f"[ERROR] Unexpected server error: {e}", flush=True)
+        logger.exception("Unexpected server error")
         return jsonify({"success": False, "error": str(e)}), 500
 
