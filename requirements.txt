@@ -1,26 +1,21 @@
-# Existing dependencies
+# Core dependencies
 nltk==3.8.1
 scikit-learn==1.3.2
-pandas==2.0.3
 python-dotenv==1.0.0
-PyPDF2==3.0.1
-python-docx==1.1.0
 pytest==7.4.3
+numpy==1.26.4
 
-# Audio processing
-soundfile==0.12.1
-pydub==0.25.1
-SpeechRecognition==3.10.0
+# LLM and NLP
+torch==2.3.1
+transformers==4.57.3
+sentence-transformers==2.3.1
+spacy==3.7.5
 
-# For audio file support
-librosa==0.10.1
-
-# For backend
+# Backend API
 Flask==3.0.3
 flask-cors==4.0.1
+requests==2.31.0
+
+# Audio processing and transcription
 pydub==0.25.1
-numpy==1.26.4
 openai-whisper==20231117
-spacy==3.7.5
-torch==2.3.1
-sentence-transformers==2.3.1
