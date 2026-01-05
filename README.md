@@ -22,3 +22,15 @@ python scripts/benchmark_transcriber.py path/to/sample.wav
 
 If `faster-whisper` is not installed, the system falls back to the existing `whisper` backend (which will use CUDA if available).
 
+## Embeddings-based content classifier (recommended)
+
+To get better, context-aware content-type detection, train the embeddings-based classifier:
+
+- Install additional dependencies: `pip install sentence-transformers` (requires `torch`).
+- Train with:
+
+```
+python scripts/train_content_classifier_embeddings.py --data-dir test_data --embed-model all-MiniLM-L6-v2
+```
+
+- The trained model is saved to `src/models/content_classifier_embeddings.joblib` and will be used by the `ContentTypeDetector` when available.

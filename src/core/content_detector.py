@@ -33,17 +33,34 @@ class ContentTypeDetector:
     
     @staticmethod
     def detect_content_type(text: str):
-        """Try classifier first (if trained), fallback to pattern matching."""
-        # Try classifier
+        """Try embedding classifier first (if trained), then TF-IDF classifier, fallback to pattern matching."""
+        # Try embedding classifier first
+        try:
+            from .content_classifier import EmbeddingContentClassifier
+            emb_clf = EmbeddingContentClassifier.load()
+            if emb_clf is not None:
+                res = emb_clf.predict(text)
+                # If confidence is high enough, return it; otherwise fall back to old methods
+                if res.get('confidence', 0.0) >= 0.45:
+                    return ContentDetectionResult(res['content_type'], res['confidence'], {'scores': res.get('scores', {}), 'evidence': res.get('evidence', [])})
+                # else continue to try TF-IDF classifier or patterns
+        except Exception:
+            # If embedding classifier fails or not present, continue
+            pass
+
+        # Next try the TF-IDF classifier
         try:
             from .content_classifier import ContentClassifier
-            classifier = ContentClassifier.load()
-            if classifier is not None:
-                res = classifier.predict(text)
-                return ContentDetectionResult(res['content_type'], res['confidence'], {'scores': res.get('scores', {}), 'evidence': res.get('evidence', [])})
+            tf_clf = ContentClassifier.load()
+            if tf_clf is not None:
+                res = tf_clf.predict(text)
+                if res.get('confidence', 0.0) >= 0.4:
+                    return ContentDetectionResult(res['content_type'], res['confidence'], {'scores': res.get('scores', {}), 'evidence': res.get('evidence', [])})
         except Exception:
-            # If classifier fails or not present, continue with pattern based detection
             pass
+
+        # Fallback to pattern matching
+        
 
         text_lower = text.lower()
         scores = {}

@@ -18,7 +18,8 @@ def transcribe():
         logger.debug(f"Uploaded filename: {filename}")
         logger.debug(f"Detected extension: {ext}")
 
-        ALLOWED_EXTS = {".mp3", ".wav", ".m4a"}
+        # Accept common audio plus MP4 video (audio will be extracted server-side)
+        ALLOWED_EXTS = {".mp3", ".wav", ".m4a", ".mp4"}
         if ext not in ALLOWED_EXTS:
             return jsonify({"success": False, "error": f"Unsupported file extension {ext}"}), 415
 

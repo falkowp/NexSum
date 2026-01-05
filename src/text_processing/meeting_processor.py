@@ -24,8 +24,8 @@ class MeetingProcessor(BaseProcessor):
         # Extract meeting elements
         elements = self.extractor.extract(processed_text)
         
-        # Generate summary
-        summary = self.summarizer.summarize(processed_text)
+        # Generate summary (use meeting template)
+        summary = self.summarizer.summarize(processed_text, content_type='meeting')
         
         return ProcessingResult(
             content_type='meeting',

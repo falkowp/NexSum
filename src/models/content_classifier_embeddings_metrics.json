@@ -1,0 +1,8 @@
+{
+  "cv_acc_mean": null,
+  "cv_acc_std": null,
+  "cv_f1_mean": null,
+  "cv_f1_std": null,
+  "train_acc": 1.0,
+  "train_f1": 1.0
+}

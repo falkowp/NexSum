@@ -24,8 +24,8 @@ class BookProcessor(BaseProcessor):
         # Extract book elements
         elements = self.extractor.extract(processed_text)
         
-        # Generate summary
-        summary = self.summarizer.summarize(processed_text)
+        # Generate summary (use book template)
+        summary = self.summarizer.summarize(processed_text, content_type='book')
         
         return ProcessingResult(
             content_type='book',

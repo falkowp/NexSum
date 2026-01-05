@@ -24,8 +24,8 @@ class AcademicProcessor(BaseProcessor):
         # Extract academic elements
         elements = self.extractor.extract(processed_text)
         
-        # Generate summary
-        summary = self.summarizer.summarize(processed_text)
+        # Generate summary (use academic template)
+        summary = self.summarizer.summarize(processed_text, content_type='academic')
         
         return ProcessingResult(
             content_type='academic',
