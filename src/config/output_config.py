@@ -170,3 +170,31 @@ class OutputConfig:
         config = cls.get_config(content_type)
         enabled_elements = [elem for elem in config.values() if elem.enabled]
         return sorted(enabled_elements, key=lambda x: x.priority)
+
+    # High-level templates used to steer summarization model prompts per content type
+    TEMPLATES = {
+        'meeting': (
+            "You are an intelligent assistant creating detailed meeting notes.\n"
+            "Return clear sections: Executive Summary (5-7 bullets, ~80-120 words), Decisions, Action Items (owner + due date if present), Risks/Issues, Next Steps.\n"
+            "Be specific, avoid fluff, and keep total length around 200-250 words.\n\nTranscript:\n\n{text}"
+        ),
+        'academic': (
+            "You summarize academic lectures/papers with precision.\n"
+            "Provide sections: Background, Research Question, Methods, Findings/Results, Limitations, Implications/Applications, Next Work.\n"
+            "Keep it evidence-driven, add key metrics if present, and target ~250-300 words.\n\nText:\n\n{text}"
+        ),
+        'book': (
+            "You summarize book chapters with enough depth for study notes.\n"
+            "Include: Synopsis (2-3 paragraphs), Main Themes, Character Arcs, Tone/Style, Notable Quotes (if any).\n"
+            "Aim for ~200-250 words and avoid spoilers beyond the provided text.\n\nText:\n\n{text}"
+        ),
+        'general': (
+            "Produce a rich summary with: TL;DR (3-4 bullets), Key Points (5-8 bullets), Recommendations/Actions, and any Data/Numbers mentioned.\n"
+            "Be concise but informative; target ~150-200 words.\n\nText:\n\n{text}"
+        )
+    }
+
+    @classmethod
+    def get_template(cls, content_type: str) -> str:
+        """Return the prompt template for the given content type."""
+        return cls.TEMPLATES.get(content_type, cls.TEMPLATES['general'])

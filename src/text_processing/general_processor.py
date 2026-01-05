@@ -23,8 +23,8 @@ class GeneralProcessor(BaseProcessor):
         # Extract general elements
         elements = self.extractor.extract(processed_text)
         
-        # Generate summary
-        summary = self.summarizer.summarize(processed_text)
+        # Generate summary (use general template)
+        summary = self.summarizer.summarize(processed_text, content_type='general')
         
         return ProcessingResult(
             content_type='general',

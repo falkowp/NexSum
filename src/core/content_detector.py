@@ -3,8 +3,12 @@ from typing import Dict
 from ..config.models import ContentDetectionResult
 
 class ContentTypeDetector:
-    """Detect content type with confidence scoring"""
-    
+    """Detect content type with confidence scoring.
+
+    Uses a trained classifier if available (ContentClassifier), otherwise falls back
+    to lightweight regex-based scoring.
+    """
+
     PATTERNS = {
         'meeting': [
             r'\b(meeting|agenda|action items|decisions|participants|attendees)\b',
@@ -29,22 +33,57 @@ class ContentTypeDetector:
     
     @staticmethod
     def detect_content_type(text: str):
+        """Try embedding classifier first (if trained), then TF-IDF classifier, fallback to pattern matching."""
+        # Try embedding classifier first
+        try:
+            from .content_classifier import EmbeddingContentClassifier
+            emb_clf = EmbeddingContentClassifier.load()
+            if emb_clf is not None:
+                res = emb_clf.predict(text)
+                # If confidence is high enough, return it; otherwise fall back to old methods
+                if res.get('confidence', 0.0) >= 0.45:
+                    return ContentDetectionResult(res['content_type'], res['confidence'], {'scores': res.get('scores', {}), 'evidence': res.get('evidence', [])})
+                # else continue to try TF-IDF classifier or patterns
+        except Exception:
+            # If embedding classifier fails or not present, continue
+            pass
+
+        # Next try the TF-IDF classifier
+        try:
+            from .content_classifier import ContentClassifier
+            tf_clf = ContentClassifier.load()
+            if tf_clf is not None:
+                res = tf_clf.predict(text)
+                if res.get('confidence', 0.0) >= 0.4:
+                    return ContentDetectionResult(res['content_type'], res['confidence'], {'scores': res.get('scores', {}), 'evidence': res.get('evidence', [])})
+        except Exception:
+            pass
+
+        # Fallback to pattern matching
+        
+
         text_lower = text.lower()
         scores = {}
-        
+        evidence = {}
+
         for content_type, patterns in ContentTypeDetector.PATTERNS.items():
             score = 0
+            matches_for_type = []
             for pattern in patterns:
-                matches = re.findall(pattern, text_lower, re.IGNORECASE)
-                score += len(matches)
+                # finditer to capture match text
+                found = [m.group(0) for m in re.finditer(pattern, text_lower, re.IGNORECASE)]
+                score += len(found)
+                matches_for_type.extend(found)
             scores[content_type] = score
+            # keep up to 10 evidence matches
+            evidence[content_type] = matches_for_type[:10]
         
         # Calculate confidence
         total_score = sum(scores.values())
         if total_score == 0:
-            return ContentDetectionResult('general', 0.0, scores)
+            return ContentDetectionResult('general', 0.0, {'scores': scores, 'evidence': evidence})
         
         detected_type = max(scores.items(), key=lambda x: x[1])[0]
         confidence = scores[detected_type] / total_score if total_score > 0 else 0.0
         
-        return ContentDetectionResult(detected_type, confidence, scores)
+        return ContentDetectionResult(detected_type, confidence, {'scores': scores, 'evidence': evidence})

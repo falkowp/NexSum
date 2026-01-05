@@ -1,5 +1,5 @@
-from .reliable_summarizer import TextSummarizer
+from .summarizer import TextSummarizer
 
-__all__ = [ 
+__all__ = [
     'TextSummarizer'
-    ]
+]

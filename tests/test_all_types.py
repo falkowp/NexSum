@@ -1,5 +1,6 @@
 import pytest
 from pathlib import Path
+import pytest
 
 from src.core.content_detector import ContentTypeDetector
 

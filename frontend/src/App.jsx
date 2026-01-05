@@ -36,7 +36,7 @@ export default function App() {
       </main>
 
       <footer className="app-footer">
-        <p>© 2023 NexSum — Professional Audio Processing</p>
+        <p>© 2025 NexSum — Professional Audio Processing</p>
       </footer>
     </div>
   );

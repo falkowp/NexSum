@@ -16,6 +16,6 @@ def summarize():
         return jsonify({"success": True, "data": result})
 
     except Exception as e:
-        print(f"[ERROR] Summarization failed: {e}", flush=True)
+        logger.exception("Summarization failed")
         return jsonify({"success": False, "error": str(e)}), 500
 
