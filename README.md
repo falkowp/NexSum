@@ -222,7 +222,3 @@ Configuration files are located in `src/config/`:
 ## License
 
 This project is available for academic and research purposes.
-
-## Contributing
-
-Contributions are welcome. Please ensure all tests pass before submitting pull requests.
