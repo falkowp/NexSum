@@ -4,22 +4,15 @@ from src.config.settings import MODEL_SETTINGS
 MAX_TOKENS = 400  # cap LLM responses for fuller summaries without runaway length
 
 class TextSummarizer:
-    """Handle text summarization - with proper fallback"""
+    """Handle text summarization using Ollama or local model fallback"""
     
     def __init__(self):
         self.model = None
-        # Check if any LLM API is available - if yes, skip loading local model to save memory
-        # Note: Ollama doesn't need env var, we'll try it anyway in generate()
-        self._use_llm = (
-            self._check_ollama_available() or
-            os.getenv("HUGGINGFACE_API_KEY") is not None or
-            os.getenv("HF_TOKEN") is not None or
-            os.getenv("GROQ_API_KEY") is not None or
-            os.getenv("OPENAI_API_KEY") is not None
-        )
+        # Check if Ollama is available
+        self._use_llm = self._check_ollama_available()
         
         if not self._use_llm:
-            # Only load local model if no API key is set
+            # Only load local model if Ollama is not available
             self._dependencies_available = self._check_dependencies()
             if self._dependencies_available:
                 self.model = self._load_model()
@@ -76,23 +69,19 @@ class TextSummarizer:
 
         prompt = template.format(text=text) if template else text
 
-        # PRIORITY 1: Use LLM API if configured (faster, better quality, follows templates)
-        # This includes Ollama (local), HuggingFace, Groq, and OpenAI
+        # PRIORITY 1: Use Ollama LLM if available (local, fast, high quality)
         try:
             from src.services import llm_service
-            # Always try LLM service - it will check Ollama first, then API keys
             llm_resp = llm_service.generate(prompt, max_tokens=MAX_TOKENS)
             return llm_resp
         except RuntimeError as e:
-            # No LLM available (neither Ollama nor API keys)
-            if "No LLM" in str(e):
-                print(f"⚠️  {e}")
-            pass
+            # Ollama not available
+            print(f"⚠️  Ollama not available: {e}")
+            print("⚠️  Falling back to local transformer model...")
         except Exception as e:
-            print(f"⚠️  LLM API call failed ({e}), falling back to local model")
-            pass
+            print(f"⚠️  LLM call failed ({e}), falling back to local model")
 
-        # PRIORITY 2: Use local model if available (for users without API key)
+        # PRIORITY 2: Use local transformer model as fallback
         # For very long texts, chunk them to get better coverage
         needs_chunking = len(text.split()) > 800
         

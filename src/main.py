@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Optional, Dict, Any, List
 
 from .core.content_detector import ContentTypeDetector
-from .core.processor import BaseProcessor
+from .text_processing.base_processor import BaseProcessor
 from .text_processing.academic_processor import AcademicProcessor
 from .text_processing.book_processor import BookProcessor
 from .text_processing.general_processor import GeneralProcessor

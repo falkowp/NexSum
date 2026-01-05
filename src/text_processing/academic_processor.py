@@ -1,6 +1,6 @@
 import re
 from typing import Dict, List
-from ..core.processor import BaseProcessor
+from .base_processor import BaseProcessor
 from ..config.models import ProcessingResult
 from ..text_processing.base_processor import TextPreprocessor
 from ..models.extractors import AcademicElementsExtractor

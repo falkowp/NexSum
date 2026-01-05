@@ -1,7 +1,7 @@
 import re
 import nltk
 from typing import Dict, List, Any
-from ..core.processor import BaseProcessor
+from .base_processor import BaseProcessor
 from ..config.models import ProcessingResult
 from ..text_processing.base_processor import TextPreprocessor
 from ..models.extractors import MeetingElementsExtractor

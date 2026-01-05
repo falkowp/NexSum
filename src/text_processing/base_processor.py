@@ -1,9 +1,22 @@
 import re
 import nltk
+from abc import ABC, abstractmethod
 from typing import List, Dict, Any
-from ..core.processor import BaseProcessor
 from ..config.models import ProcessingResult
 from ..utils.helpers import clean_text
+
+
+class BaseProcessor(ABC):
+    """Abstract base class for all content processors"""
+    
+    @abstractmethod
+    def process(self, text: str) -> ProcessingResult:
+        pass
+    
+    @abstractmethod
+    def can_process(self, content_type: str) -> bool:
+        pass
+
 
 class TextPreprocessor:
     """Handle text preprocessing operations"""

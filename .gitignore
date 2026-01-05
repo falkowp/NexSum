@@ -69,3 +69,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Test caches
+.pytest_cache/
+

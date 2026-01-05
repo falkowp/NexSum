@@ -1,6 +1,9 @@
 from flask import request, jsonify
 from backend.services.summarization_service import summarize_text
 from . import api_bp
+import logging
+
+logger = logging.getLogger(__name__)
 
 @api_bp.route("/summarize", methods=["POST"])
 def summarize():
