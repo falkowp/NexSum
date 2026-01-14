@@ -70,6 +70,6 @@ dist-ssr
 *.sln
 *.sw?
 
-# Test caches
+# Test
 .pytest_cache/
-
+test_data/
