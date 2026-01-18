@@ -155,7 +155,6 @@ class OutputConfig:
     
     @classmethod
     def get_config(cls, content_type: str) -> Dict[str, OutputElement]:
-        """Get output configuration for content type."""
         configs = {
             'meeting': cls.MEETING_CONFIG,
             'academic': cls.ACADEMIC_CONFIG,
@@ -166,7 +165,6 @@ class OutputConfig:
     
     @classmethod
     def get_enabled_elements(cls, content_type: str) -> List[OutputElement]:
-        """Get enabled output elements for content type, sorted by priority."""
         config = cls.get_config(content_type)
         enabled_elements = [elem for elem in config.values() if elem.enabled]
         return sorted(enabled_elements, key=lambda x: x.priority)

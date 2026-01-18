@@ -18,7 +18,6 @@ def transcribe():
         logger.debug(f"Uploaded filename: {filename}")
         logger.debug(f"Detected extension: {ext}")
 
-        # Accept common audio plus MP4 video (audio will be extracted server-side)
         ALLOWED_EXTS = {".mp3", ".wav", ".m4a", ".mp4"}
         if ext not in ALLOWED_EXTS:
             return jsonify({"success": False, "error": f"Unsupported file extension {ext}"}), 415
@@ -31,7 +30,6 @@ def transcribe():
             logger.exception("Transcription failed")
             return jsonify({"success": False, "error": str(e)}), 500
 
-        # Detect content type from polished transcript
         try:
             from backend.services.content_service import detect_content_type
             detection = detect_content_type(polished_text)

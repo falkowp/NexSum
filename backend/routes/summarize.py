@@ -13,7 +13,7 @@ def summarize():
             return jsonify({"success": False, "error": "No text provided"}), 400
 
         text = data["text"]
-        content_type = data.get("type")  # optional: academic/book/general/meeting
+        content_type = data.get("type")  
 
         result = summarize_text(text, content_type)
         return jsonify({"success": True, "data": result})

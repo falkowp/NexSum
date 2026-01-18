@@ -1,11 +1,5 @@
 """Lightweight LLM service wrapper using Ollama.
 
-Ollama provides:
-- Local LLM inference (runs on your machine)
-- No registration or API keys needed
-- Complete privacy - your data stays local
-- Free and open source
-
 Setup:
 1. Install Ollama: https://ollama.com
 2. Pull a model: ollama pull llama3.2:3b
@@ -23,20 +17,6 @@ OLLAMA_MODEL = os.getenv('OLLAMA_MODEL', 'llama3.2:3b')
 
 
 def generate(prompt: str, model: Optional[str] = None, max_tokens: int = 256, temperature: float = 0.2) -> str:
-    """Generate text using Ollama local LLM.
-
-    Args:
-        prompt: The text prompt to send to the model
-        model: Model name (default: from OLLAMA_MODEL env var)
-        max_tokens: Maximum tokens to generate
-        temperature: Sampling temperature (0.0-1.0)
-
-    Returns:
-        Generated text response from the model
-
-    Raises:
-        RuntimeError: If Ollama is not running or model is not available
-    """
     model = model or OLLAMA_MODEL
     
     try:
@@ -57,7 +37,7 @@ def generate(prompt: str, model: Optional[str] = None, max_tokens: int = 256, te
 
 
 def _generate_ollama(prompt: str, model: str, max_tokens: int, temperature: float) -> Optional[str]:
-    """Generate using Ollama local LLM server."""
+    
     import requests
     
     url = f"{OLLAMA_BASE_URL}/api/generate"

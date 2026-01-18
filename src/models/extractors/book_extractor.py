@@ -6,7 +6,6 @@ from collections import defaultdict
 from abc import ABC, abstractmethod
 
 class BookElementsExtractor(BaseExtractor):
-    """Extract book-specific elements"""
     
     def extract(self, text: str) -> Dict[str, Any]:
         key_characters = self._extract_key_characters(text)
@@ -22,7 +21,6 @@ class BookElementsExtractor(BaseExtractor):
         }
     
     def _extract_key_characters(self, text: str) -> List[str]:
-        """Extract key characters from book text"""
         characters: Set[str] = set()
         non_character_words = {
             'the', 'chapter', 'page', 'author', 'key', 'major', 'characters', 
@@ -38,7 +36,6 @@ class BookElementsExtractor(BaseExtractor):
                     word.lower() not in non_character_words and
                     word.isalpha()):
                     
-                    # Check context for character indicators
                     context_words = words[max(0, i-2):min(len(words), i+3)]
                     context_text = ' '.join(context_words).lower()
                     
@@ -46,7 +43,6 @@ class BookElementsExtractor(BaseExtractor):
                           ['said', 'asked', 'replied', 'stood', 'walked', 'looked', 'character']):
                         characters.add(word)
         
-        # Look for character lists
         character_patterns = [
             r'characters?[:\n]\s*(.*?)(?=\n\n|\n[A-Z]|$)',
             r'key characters?[:\n]\s*(.*?)(?=\n\n|\n[A-Z]|$)'
@@ -63,7 +59,6 @@ class BookElementsExtractor(BaseExtractor):
         return list(characters)[:5]
     
     def _extract_major_themes(self, text: str) -> List[str]:
-        """Extract major themes from book text"""
         sentences = nltk.sent_tokenize(text)
         themes = []
         theme_keywords = ['theme', 'motif', 'symbol', 'meaning', 'represents', 'symbolism']
@@ -76,7 +71,6 @@ class BookElementsExtractor(BaseExtractor):
         return themes[:3]
     
     def _extract_plot_points(self, text: str) -> List[str]:
-        """Extract key plot points from book text"""
         sentences = nltk.sent_tokenize(text)
         plot_points = []
         plot_keywords = ['discovery', 'encounter', 'decision', 'journey', 'danger', 'conflict', 'prophecy']
@@ -89,7 +83,6 @@ class BookElementsExtractor(BaseExtractor):
         return plot_points[:4]
     
     def _extract_setting(self, text: str) -> List[str]:
-        """Extract setting descriptions from book text"""
         sentences = nltk.sent_tokenize(text)
         settings = []
         setting_keywords = ['forest', 'castle', 'city', 'village', 'kingdom', 'island', 'mountain']

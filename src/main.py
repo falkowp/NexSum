@@ -1,8 +1,3 @@
-"""
-Main entry point for the summarizer module.
-Handles text summarization pipeline from input to output with configurable output elements.
-"""
-
 import argparse
 import json
 import sys

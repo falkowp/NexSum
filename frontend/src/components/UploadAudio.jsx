@@ -83,7 +83,7 @@ export default function UploadAudio({
       }
 
       const transcriptData = response.data.data;
-      onTranscribed(transcriptData);      // Store detected content type info
+      onTranscribed(transcriptData);      
       const detectedType = transcriptData.content_type || null;
       const confidence = transcriptData.content_confidence || 0;
       const evidence = transcriptData.content_features?.evidence || transcriptData.content_features || [];
@@ -92,8 +92,7 @@ export default function UploadAudio({
       // Don't auto-summarize yet — ask user to confirm detected type first
       setStatus("detected");
       setIsAwaitingConfirm(true);
-      setIsEditingType(false); // show plain text, not editable select
-      // store transcript text for later summarization
+      setIsEditingType(false); 
       setCachedTranscriptText(transcriptData.polished_transcript);
 
     } catch (err) {
@@ -105,10 +104,8 @@ export default function UploadAudio({
     }
   };
 
-  // Summarize helper (used after user confirms detected type or requests regeneration)
   const doSummarize = async (type) => {
     if (!cachedTranscriptText) return;
-    // When user confirms or triggers summarize, switch to non-editable text immediately
     setIsEditingType(false);
     setIsAwaitingConfirm(false);
     setStatus("summarizing");
@@ -123,7 +120,6 @@ export default function UploadAudio({
       if (summaryResp.data.success) {
         onSummarized(summaryResp.data.data.summary);
         setLastUsedType(type);
-        // Update detected type to the one used for summary so UI shows it as text
         setDetected((d) => ({ ...(d || {}), detectedType: type }));
         setSelectedType(type);
         setStatus("complete");

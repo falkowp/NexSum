@@ -6,7 +6,6 @@ from collections import defaultdict
 from abc import ABC, abstractmethod
 
 class GeneralElementsExtractor(BaseExtractor):
-    """Extract general content elements"""
     
     def extract(self, text: str) -> Dict[str, Any]:
         key_points = self._extract_main_topics(text)
@@ -20,7 +19,6 @@ class GeneralElementsExtractor(BaseExtractor):
         }
     
     def _extract_main_ideas(self, text: str) -> List[str]:
-        """Extract main ideas from general text"""
         sentences = nltk.sent_tokenize(text)
         ideas = []
         
@@ -33,7 +31,6 @@ class GeneralElementsExtractor(BaseExtractor):
         return ideas[:3]
     
     def _extract_actionable_items(self, text: str) -> List[str]:
-        """Extract actionable items from general text"""
         sentences = nltk.sent_tokenize(text)
         actionable = []
         
